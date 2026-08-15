@@ -26,7 +26,7 @@ def rescale(img):
   return img
 
 
-zip_2d = zipfile.ZipFile('/content/drive/MyDrive/cytation Gustavo/2D stitched.zip')
+zip_2d = zipfile.ZipFile(input("Insert the path of your .zip file: "))
 imgs_2d=[img for img in zip_2d.namelist() if img.endswith('.tif')]
 column_names = ['picture_id', 'live_cells', 'dead_cells']
 df = pd.DataFrame(columns=column_names)
