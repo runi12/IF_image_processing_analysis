@@ -1,4 +1,18 @@
-zip_3d = zipfile.ZipFile('/content/drive/MyDrive/cytation Gustavo/3D stitched.zip')
+import os
+import numpy as np
+import cv2
+import zipfile
+import pandas as pd
+
+def dissect(name):
+  part1 = name.split('/')
+  time = part1[1].split(' ')[1]
+  cell_line = part1[2].split('_')[0]
+  cell_name = f'{time}_{cell_line}'
+  return cell_name
+
+
+zip_3d = zipfile.ZipFile(input("Insert the path of the .zip file: "))
 imgs_3d=[img for img in zip_3d.namelist() if img.endswith('.tif')]
 
 df = pd.DataFrame()
@@ -49,10 +63,8 @@ for k in range(int(len(imgs_3d)/2)):
   row_data = [live_area, inside_area_list]
   col1 = pd.DataFrame(live_area, columns=[f'{name}_live_area'])
   col2 = pd.DataFrame(inside_area_list, columns=[f'{name}_dead_area'])
-  #row = pd.DataFrame([live_area, inside_area_list], columns=[f'{name}_live_area', f'{name}_dead_area'])
   row=pd.concat([col1, col2])
   df=pd.concat([df, row])
-#df.to_csv('live_dead_3d_results_feio.csv')
 
 df = df.apply(lambda x: pd.Series(x.dropna().values))
 df.to_csv('live_dead_3d_results_individuals.csv')
